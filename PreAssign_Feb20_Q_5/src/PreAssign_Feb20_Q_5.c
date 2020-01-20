@@ -28,16 +28,6 @@ int main(void) {
 		int jday_d,jday_m,jday_y;
 	};
 	struct Employee employee;
-	/*employee.empid = 101;
-	strcpy(employee.address,"Aurangabad");
-	strcpy(employee.name,"Shivam Palaskar");
-	employee.salary = 15000;
-	employee.bday_d = 26;
-	employee.bday_m = 9;
-	employee.bday_y = 1994;
-	employee.jday_d = 24;
-	employee.jday_m = 10;
-	employee.jday_y = 2016;*/
 
 	printf("Enter Name of Employee: ");
 	scanf("%[^\n]s",employee.name);
