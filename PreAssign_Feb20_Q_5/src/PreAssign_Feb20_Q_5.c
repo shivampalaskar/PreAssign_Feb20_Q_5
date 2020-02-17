@@ -13,12 +13,14 @@
 #include <string.h>
 #include <time.h>
 
-void getPro(int,int,int);
+void getProbPeriod(int,int,int);
 int getMonthDays(int,int);
 int isLeapYr(int);
 void getCurrentDate(int *,int *,int *);
 int getExp(int,int,int,int,int,int);
 int getAge(int,int,int,int,int,int);
+int getDiffInMonths(int ,int ,int ,int ,int ,int);
+
 int main(void) {
 	setvbuf(stdout,NULL,_IONBF,0);
 	struct Employee{
@@ -33,7 +35,7 @@ int main(void) {
 	scanf("%[^\n]s",employee.name);
 	fflush(stdin);
 	printf("Enter Address : ");
-	scanf("%[^\n]s",employee.address);
+	scanf("%s",employee.address);
 	printf("Enter Salary : ");
 	scanf("%d",&employee.salary);
 	printf("Enter birth date dd/mm/yyyy : ");
@@ -50,14 +52,13 @@ int main(void) {
 	int exp = getExp(employee.jday_d,employee.jday_m,employee.jday_y,cday_d,cday_m,cday_y);
 	printf("\nExperience : %d Months",exp);
 
-
-	getPro(employee.jday_d,employee.jday_m,employee.jday_y);
+	getProbPeriod(employee.jday_d,employee.jday_m,employee.jday_y);
 
 	return EXIT_SUCCESS;
 }
 
 void getCurrentDate(int *cday_d, int *cday_m, int *cday_y) {
-	time_t now;
+	time_t now; // time_t : long int
 	time(&now);
 	struct tm *local = localtime(&now);
 	*cday_d = local->tm_mday;        	// get day of month (1 to 31)
@@ -66,11 +67,11 @@ void getCurrentDate(int *cday_d, int *cday_m, int *cday_y) {
 }
 
 int getAge(int bday_d, int bday_m, int bday_y,int jday_d,int jday_m,int jday_y) {
-	int months = getExp(bday_d,bday_m,bday_y,jday_d,jday_m,jday_y);
+	int months = getDiffInMonths(bday_d,bday_m,bday_y,jday_d,jday_m,jday_y);
 	return (months/12);
 }
 
-int getExp(int jday_d,int jday_m,int jday_y,int cday_d,int cday_m,int cday_y){
+int getDiffInMonths(int jday_d,int jday_m,int jday_y,int cday_d,int cday_m,int cday_y){
 	if(cday_d<jday_d){
 		cday_d+=getMonthDays(cday_m,cday_y);
 		cday_m--;
@@ -82,11 +83,16 @@ int getExp(int jday_d,int jday_m,int jday_y,int cday_d,int cday_m,int cday_y){
 		cday_m+=12;
 		cday_y--;
 	}
-	int eday_d = cday_d-jday_d;
+	//int eday_d = cday_d-jday_d;
 	int eday_m = cday_m-jday_m;
 	int eday_y = cday_y-jday_y;
 	//printf("\nPeriod : %d days %d months %d Years",eday_d,eday_m,eday_y);
 	return (eday_y*12)+eday_m;
+}
+
+int getExp(int jday_d, int jday_m, int jday_y, int cday_d, int cday_m, int cday_y) {
+	int months = getDiffInMonths(jday_d, jday_m, jday_y, cday_d, cday_m,cday_y);
+	return  months;
 }
 
 
@@ -101,7 +107,7 @@ int getMonthDays(int m,int y){
 		return 30;
 }
 
-void getPro(int jday_d,int jday_m,int jday_y){
+void getProbPeriod(int jday_d,int jday_m,int jday_y){
 	int period = 90;
 	while(period){
 		if (period >= getMonthDays(jday_m, jday_y) - jday_d + 1) {
